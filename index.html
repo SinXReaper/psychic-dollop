@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ClarityPath — Dementia Diagnosis Journey</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- ============ HEADER ============ -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="app-logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="15" fill="var(--primary)" opacity="0.15"/>
+                        <path d="M16 6C10.48 6 6 10.48 6 16s4.48 10 10 10 10-4.48 10-10S21.52 6 16 6zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L13 19v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1v-2h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="var(--primary)"/>
+                    </svg>
+                    <span class="app-title">ClarityPath</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="header-greeting" id="headerGreeting" data-i18n="greeting"></span>
+            </div>
+        </header>
+
+        <!-- ============ TAB CONTENTS ============ -->
+        <main class="tab-container">
+
+            <!-- ===== HOME TAB ===== -->
+            <section id="tab-home" class="tab-content active">
+                <div class="tab-scroll">
+                    <!-- Greeting Card -->
+                    <div class="greeting-card">
+                        <div class="greeting-text">
+                            <h1 id="homeGreeting" data-i18n="homeGreeting"></h1>
+                            <p id="homeSubgreeting" data-i18n="homeSubgreeting"></p>
+                        </div>
+                        <div class="greeting-mascot" id="mascot">
+                            <svg width="64" height="64" viewBox="0 0 64 64">
+                                <circle cx="32" cy="32" r="28" fill="var(--accent)" opacity="0.2"/>
+                                <circle cx="32" cy="28" r="16" fill="var(--accent)" opacity="0.4"/>
+                                <circle cx="26" cy="25" r="2.5" fill="var(--surface)"/>
+                                <circle cx="38" cy="25" r="2.5" fill="var(--surface)"/>
+                                <path d="M26 33 Q32 38 38 33" stroke="var(--surface)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                <circle cx="26" cy="25" r="1.2" fill="var(--text)"/>
+                                <circle cx="38" cy="25" r="1.2" fill="var(--text)"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Patient Info Card -->
+                    <div class="card patient-card">
+                        <div class="patient-info">
+                            <div class="patient-avatar" id="patientAvatar">TK</div>
+                            <div>
+                                <h3 id="patientName"></h3>
+                                <p class="text-secondary" id="patientDetails"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Journey Progress -->
+                    <div class="card">
+                        <h3 class="card-title" data-i18n="journeyProgress"></h3>
+                        <div class="progress-tracker" id="progressTracker">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Appointments -->
+                    <div class="card">
+                        <h3 class="card-title" data-i18n="upcomingAppointments"></h3>
+                        <div id="appointmentsList">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Latest Update -->
+                    <div class="card">
+                        <h3 class="card-title" data-i18n="latestUpdate"></h3>
+                        <div id="latestUpdate">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== NOTIFICATIONS TAB ===== -->
+            <section id="tab-notifications" class="tab-content">
+                <div class="tab-scroll">
+                    <h2 class="tab-heading" data-i18n="notifications"></h2>
+
+                    <!-- Filter Bar -->
+                    <div class="filter-bar" id="notifFilterBar">
+                        <button class="filter-chip active" data-filter="all" data-i18n="filterAll"></button>
+                        <button class="filter-chip" data-filter="unread" data-i18n="filterUnread"></button>
+                        <button class="filter-chip" data-filter="appointment" data-i18n="filterAppointments"></button>
+                        <button class="filter-chip" data-filter="result" data-i18n="filterResults"></button>
+                        <button class="filter-chip" data-filter="update" data-i18n="filterUpdates"></button>
+                    </div>
+
+                    <!-- Notification List -->
+                    <div class="notification-list" id="notificationList">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== MESSAGES TAB ===== -->
+            <section id="tab-messages" class="tab-content">
+                <div class="messages-container">
+                    <!-- Messages Header -->
+                    <div class="messages-header">
+                        <h2 class="tab-heading" data-i18n="messages" style="margin-bottom:0"></h2>
+                        <div class="search-bar">
+                            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                            </svg>
+                            <input type="text" id="messageSearch" class="search-input" aria-label="Search messages" data-i18n-placeholder="searchMessages">
+                        </div>
+                    </div>
+
+                    <!-- Chat Area -->
+                    <div class="chat-area" id="chatArea">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Compose Bar -->
+                    <div class="compose-bar">
+                        <button class="attach-btn" data-action="attach" title="Attach file">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2">
+                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+                            </svg>
+                        </button>
+                        <input type="text" id="messageInput" class="message-input" data-i18n-placeholder="typeMessage">
+                        <button class="send-btn" data-action="sendMessage" id="sendMessageBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== DOCUMENTS TAB ===== -->
+            <section id="tab-documents" class="tab-content">
+                <div class="tab-scroll">
+                    <h2 class="tab-heading" data-i18n="documents"></h2>
+
+                    <!-- Search -->
+                    <div class="search-bar">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" id="docSearch" class="search-input" aria-label="Search documents" data-i18n-placeholder="searchDocuments">
+                    </div>
+
+                    <!-- Category Filters -->
+                    <div class="filter-bar" id="docFilterBar">
+                        <button class="filter-chip active" data-filter="all" data-i18n="filterAll"></button>
+                        <button class="filter-chip" data-filter="scans" data-i18n="catScans"></button>
+                        <button class="filter-chip" data-filter="memory_tests" data-i18n="catMemoryTests"></button>
+                        <button class="filter-chip" data-filter="referrals" data-i18n="catReferrals"></button>
+                        <button class="filter-chip" data-filter="specialist_reports" data-i18n="catSpecialist"></button>
+                        <button class="filter-chip" data-filter="other" data-i18n="catOther"></button>
+                    </div>
+
+                    <!-- Document List -->
+                    <div class="document-list" id="documentList">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== SETTINGS TAB ===== -->
+            <section id="tab-settings" class="tab-content">
+                <div class="tab-scroll">
+                    <h2 class="tab-heading" data-i18n="settings"></h2>
+
+                    <!-- Appearance -->
+                    <div class="settings-group">
+                        <h3 class="settings-group-title" data-i18n="appearance"></h3>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <span data-i18n="darkMode"></span>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Language -->
+                    <div class="settings-group">
+                        <h3 class="settings-group-title" data-i18n="language"></h3>
+                        <div class="language-selector" id="languageSelector">
+                            <button class="lang-btn active" data-lang="en">English</button>
+                            <button class="lang-btn" data-lang="zh">中文</button>
+                            <button class="lang-btn" data-lang="ms">Melayu</button>
+                            <button class="lang-btn" data-lang="ta">தமிழ்</button>
+                        </div>
+                    </div>
+
+                    <!-- Notification Preferences -->
+                    <div class="settings-group">
+                        <h3 class="settings-group-title" data-i18n="notifPreferences"></h3>
+                        <div class="settings-item">
+                            <span data-i18n="notifAppointments"></span>
+                            <label class="toggle"><input type="checkbox" checked data-notif="appointment"><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="settings-item">
+                            <span data-i18n="notifResults"></span>
+                            <label class="toggle"><input type="checkbox" checked data-notif="result"><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="settings-item">
+                            <span data-i18n="notifUpdates"></span>
+                            <label class="toggle"><input type="checkbox" checked data-notif="update"><span class="toggle-slider"></span></label>
+                        </div>
+                    </div>
+
+                    <!-- Profile -->
+                    <div class="settings-group">
+                        <h3 class="settings-group-title" data-i18n="profile"></h3>
+                        <div class="profile-card" id="profileCard">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Clara AI Settings -->
+                    <div class="settings-group">
+                        <h3 class="settings-group-title">Clara AI</h3>
+                        <div class="settings-item" style="flex-direction:column;align-items:stretch;gap:8px">
+                            <label data-i18n="apiKeyLabel" style="font-size:14px;color:var(--text-secondary)"></label>
+                            <input type="password" id="apiKeyInput" class="settings-input" placeholder="sk-or-v1-...">
+                            <button class="btn btn-small" data-action="saveApiKey" data-i18n="saveKey"></button>
+                        </div>
+                    </div>
+
+                    <!-- Help & FAQ -->
+                    <div class="settings-group">
+                        <h3 class="settings-group-title" data-i18n="helpFaq"></h3>
+                        <div class="faq-list" id="faqList">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Logout -->
+                    <div class="settings-group">
+                        <button class="btn btn-danger btn-full" data-action="logout" data-i18n="logout"></button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ============ BOTTOM NAV ============ -->
+        <nav class="bottom-nav">
+            <button class="nav-btn active" data-tab="home">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span data-i18n="navHome"></span>
+            </button>
+            <button class="nav-btn" data-tab="notifications">
+                <div class="nav-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>
+                    </svg>
+                    <span class="nav-badge" id="notifBadge"></span>
+                </div>
+                <span data-i18n="navNotifications"></span>
+            </button>
+            <button class="nav-btn" data-tab="messages">
+                <div class="nav-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                    </svg>
+                    <span class="nav-badge" id="msgBadge"></span>
+                </div>
+                <span data-i18n="navMessages"></span>
+            </button>
+            <button class="nav-btn" data-tab="documents">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <span data-i18n="navDocuments"></span>
+            </button>
+            <button class="nav-btn" data-tab="settings">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+                <span data-i18n="navSettings"></span>
+            </button>
+        </nav>
+
+        <!-- ============ CLARA FAB ============ -->
+        <button class="clara-fab" id="claraFab" data-action="toggleClara">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="12" r="9" fill="white" opacity="0.9"/>
+                <circle cx="10.5" cy="10.5" r="1.5" fill="var(--primary)"/>
+                <circle cx="17.5" cy="10.5" r="1.5" fill="var(--primary)"/>
+                <path d="M10 14.5 Q14 17.5 18 14.5" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M7 20 Q4 24 6 26 L10 24" fill="white" opacity="0.9"/>
+            </svg>
+        </button>
+
+        <!-- ============ CLARA CHAT OVERLAY ============ -->
+        <div class="clara-overlay" id="claraOverlay" role="dialog" aria-label="Clara AI Assistant">
+            <div class="clara-panel">
+                <div class="clara-header">
+                    <div class="clara-header-left">
+                        <div class="clara-avatar-small">
+                            <svg width="32" height="32" viewBox="0 0 32 32">
+                                <circle cx="16" cy="14" r="10" fill="var(--accent)" opacity="0.3"/>
+                                <circle cx="12" cy="12" r="1.8" fill="var(--text)"/>
+                                <circle cx="20" cy="12" r="1.8" fill="var(--text)"/>
+                                <path d="M11 16.5 Q16 20 21 16.5" stroke="var(--text)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Clara</strong>
+                            <span class="clara-status" data-i18n="claraStatus"></span>
+                        </div>
+                    </div>
+                    <button class="clara-close" data-action="toggleClara">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="clara-messages" id="claraMessages">
+                    <!-- Rendered by JS -->
+                </div>
+                <div class="clara-typing" id="claraTyping" style="display:none">
+                    <div class="typing-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+                <div class="clara-input-bar">
+                    <input type="text" id="claraInput" class="clara-input" data-i18n-placeholder="askClara">
+                    <button class="send-btn" data-action="sendClara" id="sendClaraBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ DOCUMENT VIEWER MODAL ============ -->
+        <div class="doc-viewer-overlay" id="docViewer" role="dialog" aria-label="Document Viewer">
+            <div class="doc-viewer-panel">
+                <div class="doc-viewer-header">
+                    <h3 id="docViewerTitle"></h3>
+                    <div class="doc-viewer-actions">
+                        <button class="icon-btn" data-action="downloadDoc" title="Download">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                        </button>
+                        <button class="icon-btn" data-action="shareDoc" title="Share">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                            </svg>
+                        </button>
+                        <button class="icon-btn" data-action="closeDocViewer">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="doc-viewer-meta" id="docViewerMeta"></div>
+                <div class="doc-viewer-content" id="docViewerContent">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ LOADING OVERLAY ============ -->
+        <div class="loading-overlay" id="loadingOverlay" style="display:none">
+            <div class="loader">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="config.js"></script>
+    <script src="translations.js"></script>
+    <script src="clara.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

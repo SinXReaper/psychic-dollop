@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dementia Diagnosis Journey - Radial Mindmap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 60px;
+            position: relative;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #999;
+            font-size: 1.1em;
+            margin-bottom: 80px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .mindmap {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Central Hub */
+        .center-hub {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .center-hub h2 {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: 600;
+            line-height: 1.3;
+            padding: 0 20px;
+        }
+
+        /* Branches */
+        .branch {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .branch-box {
+            padding: 15px 30px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1em;
+            white-space: nowrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            z-index: 5;
+        }
+
+        /* Stage colors matching template style */
+        .stage-1 {
+            background: #1abc9c;
+        }
+
+        /* Teal */
+        .stage-2 {
+            background: #f39c12;
+        }
+
+        /* Orange */
+        .stage-3 {
+            background: #27ae60;
+        }
+
+        /* Green */
+        .stage-4 {
+            background: #e74c3c;
+        }
+
+        /* Pink/Red */
+        .stage-5 {
+            background: #9b59b6;
+        }
+
+        /* Purple */
+
+        .branch-content {
+            max-width: 250px;
+        }
+
+        .branch-title {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .branch-desc {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .notification-tag {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* Positioning branches radially */
+        /* Top - Stage 1 */
+        .branch-top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .branch-top .branch-content {
+            margin-top: 15px;
+        }
+
+        /* Right - Stage 2 */
+        .branch-right {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .branch-right .branch-content {
+            margin-right: 15px;
+        }
+
+        /* Bottom - Stage 3 */
+        .branch-bottom {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            flex-direction: column-reverse;
+            text-align: center;
+        }
+
+        .branch-bottom .branch-content {
+            margin-bottom: 15px;
+        }
+
+        /* Left - Stage 4 */
+        .branch-left {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: left;
+        }
+
+        .branch-left .branch-content {
+            margin-left: 15px;
+        }
+
+        /* Top-Right - Stage 5 (diagonal) */
+        .branch-top-right {
+            top: 80px;
+            right: 80px;
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .branch-top-right .branch-content {
+            margin-right: 15px;
+        }
+
+        /* SVG Lines */
+        .connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: #f9f9f9;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .mindmap {
+                height: auto;
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .center-hub {
+                position: relative;
+                margin-bottom: 40px;
+            }
+
+            .branch {
+                position: relative;
+                transform: none !important;
+                left: auto !important;
+                right: auto !important;
+                top: auto !important;
+                bottom: auto !important;
+                flex-direction: column !important;
+                text-align: center !important;
+                width: 100%;
+            }
+
+            .branch-content {
+                margin: 10px 0 !important;
+                text-align: center !important;
+            }
+
+            .connections {
+                display: none;
+            }
+        }
+    </style>
+    <base target="_blank">
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">DEMENTIA DIAGNOSIS JOURNEY</div>
+        <div class="subtitle">Family Notification System Flow</div>
+
+        <div class="mindmap">
+            <!-- SVG Connection Lines -->
+            <svg class="connections" viewBox="0 0 1200 700">
+                <!-- Center to Top -->
+                <line x1="600" y1="350" x2="600" y2="120" stroke="#1abc9c" stroke-width="2" />
+                <circle cx="600" cy="120" r="4" fill="#1abc9c" />
+
+                <!-- Center to Right -->
+                <line x1="600" y1="350" x2="980" y2="350" stroke="#f39c12" stroke-width="2" />
+                <circle cx="980" cy="350" r="4" fill="#f39c12" />
+
+                <!-- Center to Bottom -->
+                <line x1="600" y1="350" x2="600" y2="580" stroke="#27ae60" stroke-width="2" />
+                <circle cx="600" cy="580" r="4" fill="#27ae60" />
+
+                <!-- Center to Left -->
+                <line x1="600" y1="350" x2="220" y2="350" stroke="#e74c3c" stroke-width="2" />
+                <circle cx="220" cy="350" r="4" fill="#e74c3c" />
+
+                <!-- Center to Top-Right -->
+                <line x1="600" y1="350" x2="920" y2="150" stroke="#9b59b6" stroke-width="2" />
+                <circle cx="920" cy="150" r="4" fill="#9b59b6" />
+            </svg>
+
+            <!-- Central Hub -->
+            <div class="center-hub">
+                <h2>DEMENTIA<br>DIAGNOSIS<br>JOURNEY</h2>
+            </div>
+
+            <!-- Stage 1: Top - GP Referral -->
+            <div class="branch branch-top">
+                <div class="branch-box stage-1">STAGE 1: GP / POLYCLINIC</div>
+                <div class="branch-content">
+                    <div class="branch-title">First Visit & Referral</div>
+                    <div class="branch-desc">
+                        • Basic memory screening<br>
+                        • Blood tests ordered<br>
+                        • Referral to Memory Clinic<br>
+                        • Family contact registered
+                    </div>
+                    <span class="notification-tag">🔔 Notification #1: Referral Confirmed</span>
+                </div>
+            </div>
+
+            <!-- Stage 2: Right - Testing -->
+            <div class="branch branch-right">
+                <div class="branch-box stage-2">STAGE 2: COMPREHENSIVE TESTING</div>
+                <div class="branch-content">
+                    <div class="branch-title">Memory Clinic Assessment</div>
+                    <div class="branch-desc">
+                        • ACE-III cognitive test (2-3 hrs)<br>
+                        • Brain MRI scan<br>
+                        • Biomarker blood tests<br>
+                        • Family history interview
+                    </div>
+                    <span class="notification-tag">🔔 #2: Pre-Visit Reminder (48h)</span><br>
+                    <span class="notification-tag">🔔 #3: Post-Visit Summary (24h)</span>
+                </div>
+            </div>
+
+            <!-- Stage 3: Bottom - Verification -->
+            <div class="branch branch-bottom">
+                <div class="branch-content">
+                    <div class="branch-title">Specialist Team Review</div>
+                    <div class="branch-desc">
+                        • MDT meeting: Psychiatrist + Neurologist<br>
+                        • Radiologist reviews MRI<br>
+                        • Biomarker analysis<br>
+                        • Differential diagnosis (2-4 weeks)
+                    </div>
+                    <span class="notification-tag">🔔 #4: Reports Sent to Specialists</span><br>
+                    <span class="notification-tag">🔔 #5: Weekly Progress Updates</span>
+                </div>
+                <div class="branch-box stage-3">STAGE 3: MDT VERIFICATION</div>
+            </div>
+
+            <!-- Stage 4: Left - Diagnosis -->
+            <div class="branch branch-left">
+                <div class="branch-content">
+                    <div class="branch-title">Final Diagnosis Delivery</div>
+                    <div class="branch-desc">
+                        • Diagnosis type confirmed<br>
+                        • Stage classification<br>
+                        • Treatment options discussed<br>
+                        • Care coordinator assigned
+                    </div>
+                    <span class="notification-tag">🔔 #6: Diagnosis Confirmed</span>
+                </div>
+                <div class="branch-box stage-4">STAGE 4: DIAGNOSIS</div>
+            </div>
+
+            <!-- Stage 5: Top-Right - Ongoing Care -->
+            <div class="branch branch-top-right">
+                <div class="branch-box stage-5">STAGE 5: ONGOING CARE</div>
+                <div class="branch-content">
+                    <div class="branch-title">Continuous Support</div>
+                    <div class="branch-desc">
+                        • 6-12 month check-ups<br>
+                        • Medication management<br>
+                        • Caregiver support services<br>
+                        • Care plan adjustments
+                    </div>
+                    <span class="notification-tag">🔔 #7: Monthly Care Updates</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div style="font-weight: 600; margin-bottom: 10px; color: #333;">LEGEND</div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff6b6b;"></div>
+                <span>🔔 = Notification sent to family</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #333;"></div>
+                <span>Central hub = Patient journey</span>
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8em; color: #999;">
+                Created for Singapore Healthcare System
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
